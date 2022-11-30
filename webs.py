@@ -16,7 +16,7 @@ def get_live_room():
         url = f"https://xbk.189.cn/xbkapi/lteration/index/recommend/anchorRecommend?provinceCode={province}"
         data = get(url, headers=headers).json()
         if not data['data']:
-            time.sleep(2)
+            time.sleep(3)
             continue
         for live in data['data']:
             s = 1
@@ -29,7 +29,7 @@ def get_live_room():
                 print(live_count)
                 print(live)
                 live_info[f"liveRoom{live_count}"] = live
-        time.sleep(2)
+        time.sleep(3)
     live_json = json.dumps(live_info, ensure_ascii=False)
     return live_json
 

@@ -24,8 +24,9 @@ def get_live_room():
                     s = 0
                     break
             if s:
-                print(live)
                 live_count += 1
+                print(live_count)
+                print(live)
                 live_info[f"liveRoom{live_count}"] = live
         time.sleep(2)
     live_json = json.dumps(live_info, ensure_ascii=False)

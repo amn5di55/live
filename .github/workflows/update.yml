@@ -1,0 +1,59 @@
+name: 更新
+
+on:
+  #push:
+  #  branches: [ main ]
+  #pull_request:
+  #  branches: [ main ]
+  schedule:
+     - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    #if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+        
+      - name: Update system and install zsh
+        run: |
+          sudo -E apt-get -qq update
+          sudo -E apt-get install zsh -y
+          
+      - name: 初始化Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          
+      - name: 开始
+        run: |
+          pip3 install requests
+          python3 webs.py
+          
+      - name: '提交更新'
+        id: commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --quiet && git diff --staged --quiet || git commit -am 'update'
+          
+          
+      - name: Push Dust
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.PAT }}
+          branch: main
+          
+          
+      - name: delete workflow runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          token: ${{ secrets.PAT }}
+          repository: ${{ github.repository }}
+          retain_days: 1
+          keep_minimum_runs: 1

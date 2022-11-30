@@ -10,7 +10,7 @@ packages.urllib3.util.ssl_.DEFAULT_CIPHERS += ":HIGH:!DH:!aNULL"
 def get_live_room():
     live_info = {}
     live_count = 0
-    for i in range(1, 45):
+    for i in range(1, 36):
         headers = get_header()
         province = str(i).zfill(2)
         url = f"https://xbk.189.cn/xbkapi/lteration/index/recommend/anchorRecommend?provinceCode={province}"
